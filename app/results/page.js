@@ -67,20 +67,10 @@ export default function ResultsPage() {
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
-  const [authed, setAuthed] = useState(false)
-  const [passwordInput, setPasswordInput] = useState('')
-  const [passwordError, setPasswordError] = useState('')
   const [filterSchool, setFilterSchool] = useState('All')
   const [filterYear, setFilterYear] = useState('All')
 
   useEffect(() => {
-    if (typeof window !== 'undefined' && sessionStorage.getItem('results_authed') === '1') {
-      setAuthed(true)
-    }
-  }, [])
-
-  useEffect(() => {
-    if (!authed) return
     fetch('/api/responses')
       .then(r => r.json())
       .then(res => {
@@ -89,52 +79,7 @@ export default function ResultsPage() {
       })
       .catch(() => setError('Network error'))
       .finally(() => setLoading(false))
-  }, [authed])
-
-  const handlePasswordSubmit = async (e) => {
-    e.preventDefault()
-    setPasswordError('')
-    try {
-      const res = await fetch('/api/auth', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ password: passwordInput }),
-      })
-      if (res.ok) {
-        sessionStorage.setItem('results_authed', '1')
-        setAuthed(true)
-      } else {
-        setPasswordError('Incorrect password. Try again.')
-      }
-    } catch {
-      setPasswordError('Network error. Please try again.')
-    }
-  }
-
-  if (!authed) return (
-    <div className="min-h-screen flex items-center justify-center p-6">
-      <div className="section-card w-full max-w-sm text-center">
-        <div className="text-4xl mb-4">🔒</div>
-        <h2 className="text-xl font-bold gold-accent mb-2">Results Dashboard</h2>
-        <p className="text-gray-400 text-sm mb-6">This page is password protected.</p>
-        <form onSubmit={handlePasswordSubmit} className="space-y-3">
-          <input
-            type="password"
-            className="other-input text-center"
-            placeholder="Enter password"
-            value={passwordInput}
-            onChange={e => { setPasswordInput(e.target.value); setPasswordError('') }}
-            autoFocus
-          />
-          {passwordError && <p className="text-red-400 text-xs">{passwordError}</p>}
-          <button type="submit" className="btn-primary w-full">Unlock →</button>
-        </form>
-        <div className="mt-4">
-          <Link href="/" className="text-xs text-gray-600 hover:text-gray-400 transition-colors">← Back to Survey</Link>
-        </div>
-      </div>
-    </div>
-  )
+  }, [])
 
   if (loading) return (
     <div className="min-h-screen flex items-center justify-center">
@@ -220,7 +165,6 @@ export default function ResultsPage() {
           <div className="flex items-center gap-2 flex-wrap">
             <button onClick={exportCSV} className="text-xs text-gray-400 hover:text-gray-200 border border-gray-700 px-3 py-2 rounded-lg transition-colors">⬇ CSV</button>
             <button onClick={exportJSON} className="text-xs text-gray-400 hover:text-gray-200 border border-gray-700 px-3 py-2 rounded-lg transition-colors">⬇ JSON</button>
-            <button onClick={() => { sessionStorage.removeItem('results_authed'); setAuthed(false) }} className="text-xs text-gray-400 hover:text-red-400 border border-gray-700 px-3 py-2 rounded-lg transition-colors">🔒 Lock</button>
             <Link href="/" className="text-xs text-gray-400 hover:text-gray-200 border border-gray-700 px-3 py-2 rounded-lg transition-colors">← Survey</Link>
           </div>
         </div>
