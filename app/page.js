@@ -191,7 +191,7 @@ export default function SurveyPage() {
                 <input
                   type="text"
                   className="other-input"
-                  placeholder="e.g. Juan Dela Cruz"
+                  placeholder="e.g. Carlos Miguel"
                   value={form.name}
                   onChange={e => set('name', e.target.value)}
                 />
