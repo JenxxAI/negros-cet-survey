@@ -390,7 +390,6 @@ export default function SurveyPage() {
               GitHub
             </a>
           </div>
-          <p className="text-xs text-gray-700">Built by Carlos Miguel Torres</p>
         </div>
       </div>
     </div>
