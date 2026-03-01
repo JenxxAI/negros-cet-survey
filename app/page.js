@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 
 const SCHOOLS = ['CHMSU', 'SUNN', 'TUP', 'PNU', 'Colegio San Agustin', 'La Salle']
@@ -8,7 +8,7 @@ const COURSES = ['Engineering', 'Education', 'Nursing / Health Sciences', 'Busin
 const NUM_QUESTIONS = ['Less than 50', '50–100', '101–150', '151–200', 'More than 200', "I don't remember"]
 const DURATIONS = ['Less than 1 hour', '1–2 hours', '2–3 hours', 'More than 3 hours', "I don't remember"]
 const EXAM_TYPES = ['Paper and Pencil', 'Computerized', 'Both']
-const STRUCTURES = ['One straight test (no sections)', 'Divided into sections per subject', "I don't remember"]
+const STRUCTURES = ['One straight test with no sections or breaks', 'Divided into 2 sections (e.g. English + Math)', 'Divided into 3 sections (e.g. English, Math, Science)', 'Divided into 4 sections (e.g. English, Math, Science, Filipino)', 'Divided into 5 or more sections', 'Each section was timed separately', 'All sections were given at once with one timer', "I don't remember"]
 const PASSING = ['Yes, they told us', "Yes but didn't tell exact score", 'No — ranking based', "I don't know"]
 const SUBJECTS = ['English / Reading Comprehension', 'Mathematics', 'Science', 'Filipino / Komunikasyon', 'Logic / Abstract Reasoning', 'General Knowledge / Current Events', 'Technical / Vocational Reasoning']
 const MATH_TOPICS = ['Basic Arithmetic', 'Fractions and Decimals', 'Algebra', 'Geometry', 'Word Problems', 'Statistics / Probability', "I don't remember"]
@@ -110,6 +110,14 @@ export default function SurveyPage() {
 
   const set = (key, val) => setForm(f => ({ ...f, [key]: val }))
 
+  const [responseCount, setResponseCount] = useState(null)
+  useEffect(() => {
+    fetch('/api/count')
+      .then(r => r.json())
+      .then(res => { if (res.success) setResponseCount(res.count) })
+      .catch(() => {})
+  }, [])
+
   const progress = (section / TOTAL_SECTIONS) * 100
 
   const handleSubmit = async () => {
@@ -154,6 +162,9 @@ export default function SurveyPage() {
           <p className="text-xs uppercase tracking-widest gold-accent mb-2">Negros CET Project</p>
           <h1 className="text-3xl md:text-4xl font-display font-bold mb-3">College Entrance Exam<br />Experience Survey</h1>
           <p className="text-gray-400 text-sm max-w-md mx-auto">Help us build a <span className="gold-accent font-semibold">free online reviewer</span> for students in Negros! This will only take 5–10 minutes. 🙏</p>
+          {responseCount !== null && (
+            <p className="text-xs mt-3 font-semibold" style={{color:'var(--gold)'}}>🙌 {responseCount} student{responseCount !== 1 ? 's have' : ' has'} already responded!</p>
+          )}
         </div>
 
         {/* Progress */}
