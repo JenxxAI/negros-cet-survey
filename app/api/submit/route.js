@@ -13,6 +13,7 @@ export async function POST(request) {
     const { data, error } = await supabase
       .from('survey_responses')
       .insert([{
+        name: body.name || null,
         school: body.school,
         school_other: body.school_other || null,
         year_taken: body.year_taken,
