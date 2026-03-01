@@ -85,6 +85,7 @@ export default function SurveyPage() {
 
   const [form, setForm] = useState({
     name: '',
+    website: '', // honeypot — must stay empty
     school: [], school_other: '',
     year_taken: '', 
     course: [], course_other: '',
@@ -112,6 +113,14 @@ export default function SurveyPage() {
   const set = (key, val) => setForm(f => ({ ...f, [key]: val }))
 
   const [responseCount, setResponseCount] = useState(null)
+  const [alreadySubmitted, setAlreadySubmitted] = useState(false)
+
+  useEffect(() => {
+    if (typeof window !== 'undefined' && localStorage.getItem('cet_submitted') === '1') {
+      setAlreadySubmitted(true)
+    }
+  }, [])
+
   useEffect(() => {
     fetch('/api/count')
       .then(r => r.json())
@@ -131,12 +140,28 @@ export default function SurveyPage() {
         body: JSON.stringify(form),
       })
       const data = await res.json()
-      if (data.success) setSubmitted(true)
+      if (data.success) {
+        localStorage.setItem('cet_submitted', '1')
+        setSubmitted(true)
+      }
       else setError('Something went wrong. Please try again.')
     } catch {
       setError('Network error. Please check your connection.')
     }
     setLoading(false)
+  }
+
+  if (alreadySubmitted) {
+    return (
+      <div className="min-h-screen flex items-center justify-center p-6">
+        <div className="text-center max-w-md">
+          <div className="text-6xl mb-6">✅</div>
+          <h1 className="text-2xl font-display gold-accent mb-4">You've already responded!</h1>
+          <p className="text-gray-400 mb-8">It looks like you've already submitted this survey from this device. Thank you so much! 🙏</p>
+          <button onClick={() => { localStorage.removeItem('cet_submitted'); setAlreadySubmitted(false) }} className="btn-primary" style={{background:'#21262d', color:'#e6edf3'}}>Submit Again Anyway</button>
+        </div>
+      </div>
+    )
   }
 
   if (submitted) {
@@ -147,7 +172,7 @@ export default function SurveyPage() {
           <h1 className="text-3xl font-display gold-accent mb-4">Salamat!</h1>
           <p className="text-gray-400 mb-8 text-lg">Your answers will help us build a better reviewer for future students in Negros. You're awesome! 🙏</p>
           <div className="flex gap-4 justify-center flex-wrap">
-            <button onClick={() => { setSubmitted(false); setSection(1); setForm({name:'',school:[],school_other:'',year_taken:'',course:[],course_other:'',num_questions:'',exam_duration:'',exam_type:'',exam_type_other:'',exam_structure:'',exam_structure_other:'',passing_score:'',passing_score_other:'',subjects:[],subjects_other:'',math_topics:[],math_topics_other:'',english_topics:[],english_topics_other:'',science_topics:[],science_topics_other:'',logic_topics:[],logic_topics_other:'',genknowledge_topics:[],genknowledge_topics_other:'',hardest_part:'',hardest_part_other:'',easiest_part:'',easiest_part_other:'',time_enough:'',time_enough_other:'',review_method:[],review_method_other:'',reviewer_available:'',reviewer_available_other:'',wanted_features:[],wanted_features_other:'',would_use:'',suggestions:''}) }} className="btn-primary">Submit Another Response</button>
+            <button onClick={() => { localStorage.removeItem('cet_submitted'); setSubmitted(false); setSection(1); setForm({name:'',website:'',school:[],school_other:'',year_taken:'',course:[],course_other:'',num_questions:'',exam_duration:'',exam_type:'',exam_type_other:'',exam_structure:'',exam_structure_other:'',passing_score:'',passing_score_other:'',subjects:[],subjects_other:'',math_topics:[],math_topics_other:'',english_topics:[],english_topics_other:'',science_topics:[],science_topics_other:'',logic_topics:[],logic_topics_other:'',genknowledge_topics:[],genknowledge_topics_other:'',hardest_part:'',hardest_part_other:'',easiest_part:'',easiest_part_other:'',time_enough:'',time_enough_other:'',review_method:[],review_method_other:'',reviewer_available:'',reviewer_available_other:'',wanted_features:[],wanted_features_other:'',would_use:'',suggestions:''}) }} className="btn-primary">Submit Another Response</button>
             <Link href="/results" className="btn-primary" style={{display:'inline-block', textDecoration:'none'}}>View Results</Link>
           </div>
         </div>
@@ -365,6 +390,8 @@ export default function SurveyPage() {
                 <label className="text-sm font-semibold text-gray-200 block mb-2">22. Any other suggestions or things you remember about the exam?</label>
                 <textarea className="other-input" placeholder="Type your answer here..." value={form.suggestions} onChange={e => set('suggestions', e.target.value)} />
               </div>
+              {/* Honeypot — hidden from humans, bots fill it */}
+              <input type="text" name="website" value={form.website} onChange={e => set('website', e.target.value)} style={{position:'absolute',left:'-9999px',opacity:0,height:0}} tabIndex={-1} autoComplete="off" aria-hidden="true" />
             </div>
 
             {error && <p className="text-red-400 text-sm mb-4 text-center">{error}</p>}
