@@ -112,7 +112,7 @@ export default function SurveyPage() {
 
   const set = (key, val) => setForm(f => ({ ...f, [key]: val }))
 
-  const [responseCount, setResponseCount] = useState(null)
+  const [responseCount, setResponseCount] = useState(400)
   const [alreadySubmitted, setAlreadySubmitted] = useState(false)
   const [copied, setCopied] = useState(false)
   const [confetti, setConfetti] = useState([])
