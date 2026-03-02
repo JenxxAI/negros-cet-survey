@@ -114,6 +114,19 @@ export default function SurveyPage() {
 
   const [responseCount, setResponseCount] = useState(null)
   const [alreadySubmitted, setAlreadySubmitted] = useState(false)
+  const [copied, setCopied] = useState(false)
+
+  const handleCopyLink = () => {
+    navigator.clipboard.writeText(window.location.href).then(() => {
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    })
+  }
+
+  const handleShareFacebook = () => {
+    const url = encodeURIComponent(window.location.href)
+    window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank', 'noopener,noreferrer')
+  }
 
   useEffect(() => {
     if (typeof window !== 'undefined' && localStorage.getItem('cet_submitted') === '1') {
@@ -170,9 +183,31 @@ export default function SurveyPage() {
         <div className="text-center max-w-md">
           <div className="text-6xl mb-6">🎓</div>
           <h1 className="text-3xl font-display gold-accent mb-4">Salamat!</h1>
-          <p className="text-gray-400 mb-8 text-lg">Your answers will help me build a better reviewer for future students in Negros. You're awesome! 🙏</p>
+          <p className="text-gray-400 mb-6 text-lg">Your answers will help me build a better reviewer for future students in Negros. You're awesome! 🙏</p>
+
+          {/* Share section */}
+          <div className="section-card mb-6 text-left">
+            <p className="text-sm font-semibold text-gray-200 mb-3 text-center">Spread the word! Help reach more students 📢</p>
+            <div className="flex gap-3 justify-center flex-wrap">
+              <button
+                onClick={handleCopyLink}
+                className="btn-primary flex items-center gap-2 text-sm"
+                style={{background:'#21262d', color:'#e6edf3'}}
+              >
+                {copied ? '✅ Copied!' : '🔗 Copy Link'}
+              </button>
+              <button
+                onClick={handleShareFacebook}
+                className="btn-primary flex items-center gap-2 text-sm"
+                style={{background:'#1877f2', color:'#fff'}}
+              >
+                📱 Share on Facebook
+              </button>
+            </div>
+          </div>
+
           <div className="flex gap-4 justify-center flex-wrap">
-            <button onClick={() => { localStorage.removeItem('cet_submitted'); setSubmitted(false); setSection(1); setForm({name:'',website:'',school:[],school_other:'',year_taken:'',course:[],course_other:'',num_questions:'',exam_duration:'',exam_type:'',exam_type_other:'',exam_structure:'',exam_structure_other:'',passing_score:'',passing_score_other:'',subjects:[],subjects_other:'',math_topics:[],math_topics_other:'',english_topics:[],english_topics_other:'',science_topics:[],science_topics_other:'',logic_topics:[],logic_topics_other:'',genknowledge_topics:[],genknowledge_topics_other:'',hardest_part:'',hardest_part_other:'',easiest_part:'',easiest_part_other:'',time_enough:'',time_enough_other:'',review_method:[],review_method_other:'',reviewer_available:'',reviewer_available_other:'',wanted_features:[],wanted_features_other:'',would_use:'',suggestions:''}) }} className="btn-primary">Submit Another Response</button>
+            <button onClick={() => { localStorage.removeItem('cet_submitted'); setSubmitted(false); setSection(1); setForm({name:'',website:'',school:[],school_other:'',year_taken:'',course:[],course_other:'',num_questions:'',exam_duration:'',exam_type:'',exam_type_other:'',exam_structure:'',exam_structure_other:'',passing_score:'',passing_score_other:'',subjects:[],subjects_other:'',math_topics:[],math_topics_other:'',english_topics:[],english_topics_other:'',science_topics:[],science_topics_other:'',logic_topics:[],logic_topics_other:'',genknowledge_topics:[],genknowledge_topics_other:'',hardest_part:'',hardest_part_other:'',easiest_part:'',easiest_part_other:'',time_enough:'',time_enough_other:'',review_method:[],review_method_other:'',reviewer_available:'',reviewer_available_other:'',wanted_features:[],wanted_features_other:'',would_use:'',suggestions:''}) }} className="btn-primary" style={{background:'#21262d', color:'#e6edf3'}}>Submit Another Response</button>
             <Link href="/results" className="btn-primary" style={{display:'inline-block', textDecoration:'none'}}>View Results</Link>
           </div>
         </div>
@@ -185,11 +220,27 @@ export default function SurveyPage() {
       <div className="max-w-2xl mx-auto">
         {/* Header */}
         <div className="text-center mb-10">
+          {/* Negros Island Map */}
+          <div className="flex justify-center mb-4">
+            <svg viewBox="0 0 120 200" width="60" height="100" aria-label="Negros Island" style={{filter:'drop-shadow(0 0 8px rgba(201,168,76,0.4))'}}>
+              <path
+                d="M60 8 C68 10, 80 18, 85 30 C90 42, 88 52, 92 62 C96 74, 98 82, 94 95 C90 108, 82 116, 78 128 C74 140, 76 152, 70 162 C65 170, 58 174, 52 170 C46 166, 42 156, 40 144 C38 132, 40 120, 36 108 C32 96, 24 88, 22 76 C20 64, 26 54, 30 42 C34 30, 42 14, 52 9 Z"
+                fill="#c9a84c"
+                fillOpacity="0.25"
+                stroke="#c9a84c"
+                strokeWidth="2"
+              />
+              <text x="57" y="95" textAnchor="middle" fill="#c9a84c" fontSize="9" fontWeight="bold" opacity="0.9">NEGROS</text>
+            </svg>
+          </div>
           <p className="text-xs uppercase tracking-widest gold-accent mb-2">Negros CET Project</p>
           <h1 className="text-3xl md:text-4xl font-display font-bold mb-3">College Entrance Exam<br />Experience Survey</h1>
           <p className="text-gray-400 text-sm max-w-md mx-auto">Help me build a <span className="gold-accent font-semibold">free online reviewer</span> for students in Negros! This will only take 2–3 minutes. 🙏</p>
           {responseCount !== null && (
-            <p className="text-xs mt-3 font-semibold" style={{color:'var(--gold)'}}>🙌 {responseCount} student{responseCount !== 1 ? 's have' : ' has'} already responded!</p>
+            <div className="mt-5 inline-flex flex-col items-center">
+              <span className="text-5xl font-bold" style={{color:'var(--gold)'}}>{responseCount}</span>
+              <span className="text-sm text-gray-400 mt-1">student{responseCount !== 1 ? 's' : ''} already responded 🙌</span>
+            </div>
           )}
         </div>
 
