@@ -8,13 +8,15 @@ export async function GET() {
       process.env.SUPABASE_SERVICE_KEY
     )
 
-    const { count, error } = await supabase
+    const { data, error } = await supabase
       .from('survey_responses')
-      .select('*', { count: 'exact', head: true })
+      .select('id')
 
     if (error) throw error
 
-    return NextResponse.json({ success: true, count: count ?? 0 })
+    const count = data?.length ?? 0
+
+    return NextResponse.json({ success: true, count })
   } catch (err) {
     return NextResponse.json({ success: false, error: err.message }, { status: 500 })
   }
