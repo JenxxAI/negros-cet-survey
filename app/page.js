@@ -115,6 +115,23 @@ export default function SurveyPage() {
   const [responseCount, setResponseCount] = useState(null)
   const [alreadySubmitted, setAlreadySubmitted] = useState(false)
   const [copied, setCopied] = useState(false)
+  const [confetti, setConfetti] = useState([])
+
+  useEffect(() => {
+    if (!submitted) return
+    const pieces = Array.from({ length: 80 }, (_, i) => ({
+      id: i,
+      left: Math.random() * 100,
+      delay: Math.random() * 1.2,
+      duration: 1.8 + Math.random() * 1.4,
+      color: ['#c9a84c','#e8c97a','#f5e0a0','#a07c30','#fff','#f0c040'][Math.floor(Math.random() * 6)],
+      size: 6 + Math.random() * 8,
+      rotate: Math.random() * 360,
+    }))
+    setConfetti(pieces)
+    const t = setTimeout(() => setConfetti([]), 4000)
+    return () => clearTimeout(t)
+  }, [submitted])
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(window.location.href).then(() => {
@@ -134,11 +151,17 @@ export default function SurveyPage() {
     }
   }, [])
 
-  useEffect(() => {
+  const fetchCount = () => {
     fetch('/api/count')
       .then(r => r.json())
       .then(res => { if (res.success) setResponseCount(res.count) })
       .catch(() => {})
+  }
+
+  useEffect(() => {
+    fetchCount()
+    const interval = setInterval(fetchCount, 30000)
+    return () => clearInterval(interval)
   }, [])
 
   const progress = (section / TOTAL_SECTIONS) * 100
@@ -156,6 +179,7 @@ export default function SurveyPage() {
       if (data.success) {
         localStorage.setItem('cet_submitted', '1')
         setSubmitted(true)
+        fetchCount()
       }
       else setError('Something went wrong. Please try again.')
     } catch {
@@ -179,7 +203,21 @@ export default function SurveyPage() {
 
   if (submitted) {
     return (
-      <div className="min-h-screen flex items-center justify-center p-6">
+      <div className="min-h-screen flex items-center justify-center p-6" style={{position:'relative',overflow:'hidden'}}>
+        {/* Confetti */}
+        {confetti.map(p => (
+          <div key={p.id} style={{
+            position:'fixed', top:0,
+            left:`${p.left}%`,
+            width: p.size, height: p.size,
+            background: p.color,
+            borderRadius: Math.random() > 0.5 ? '50%' : '2px',
+            animation: `confetti-fall ${p.duration}s ${p.delay}s ease-in forwards`,
+            zIndex: 50,
+            transform: `rotate(${p.rotate}deg)`,
+            pointerEvents: 'none',
+          }} />
+        ))}
         <div className="text-center max-w-md">
           <div className="text-6xl mb-6">🎓</div>
           <h1 className="text-3xl font-display gold-accent mb-4">Salamat!</h1>

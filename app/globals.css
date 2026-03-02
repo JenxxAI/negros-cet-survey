@@ -31,7 +31,12 @@ body {
   background: linear-gradient(90deg, var(--gold), #e8c97a);
   height: 4px;
   border-radius: 2px;
-  transition: width 0.4s ease;
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes confetti-fall {
+  0%   { transform: translateY(-10px) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
 }
 
 .checkbox-item, .radio-item {
