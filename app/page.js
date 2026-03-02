@@ -170,7 +170,7 @@ export default function SurveyPage() {
         <div className="text-center max-w-md">
           <div className="text-6xl mb-6">🎓</div>
           <h1 className="text-3xl font-display gold-accent mb-4">Salamat!</h1>
-          <p className="text-gray-400 mb-8 text-lg">Your answers will help us build a better reviewer for future students in Negros. You're awesome! 🙏</p>
+          <p className="text-gray-400 mb-8 text-lg">Your answers will help me build a better reviewer for future students in Negros. You're awesome! 🙏</p>
           <div className="flex gap-4 justify-center flex-wrap">
             <button onClick={() => { localStorage.removeItem('cet_submitted'); setSubmitted(false); setSection(1); setForm({name:'',website:'',school:[],school_other:'',year_taken:'',course:[],course_other:'',num_questions:'',exam_duration:'',exam_type:'',exam_type_other:'',exam_structure:'',exam_structure_other:'',passing_score:'',passing_score_other:'',subjects:[],subjects_other:'',math_topics:[],math_topics_other:'',english_topics:[],english_topics_other:'',science_topics:[],science_topics_other:'',logic_topics:[],logic_topics_other:'',genknowledge_topics:[],genknowledge_topics_other:'',hardest_part:'',hardest_part_other:'',easiest_part:'',easiest_part_other:'',time_enough:'',time_enough_other:'',review_method:[],review_method_other:'',reviewer_available:'',reviewer_available_other:'',wanted_features:[],wanted_features_other:'',would_use:'',suggestions:''}) }} className="btn-primary">Submit Another Response</button>
             <Link href="/results" className="btn-primary" style={{display:'inline-block', textDecoration:'none'}}>View Results</Link>
@@ -187,7 +187,7 @@ export default function SurveyPage() {
         <div className="text-center mb-10">
           <p className="text-xs uppercase tracking-widest gold-accent mb-2">Negros CET Project</p>
           <h1 className="text-3xl md:text-4xl font-display font-bold mb-3">College Entrance Exam<br />Experience Survey</h1>
-          <p className="text-gray-400 text-sm max-w-md mx-auto">Help us build a <span className="gold-accent font-semibold">free online reviewer</span> for students in Negros! This will only take 2–3 minutes. 🙏</p>
+          <p className="text-gray-400 text-sm max-w-md mx-auto">Help me build a <span className="gold-accent font-semibold">free online reviewer</span> for students in Negros! This will only take 2–3 minutes. 🙏</p>
           {responseCount !== null && (
             <p className="text-xs mt-3 font-semibold" style={{color:'var(--gold)'}}>🙌 {responseCount} student{responseCount !== 1 ? 's have' : ' has'} already responded!</p>
           )}
@@ -373,7 +373,7 @@ export default function SurveyPage() {
         {section === 5 && (
           <div>
             <div className="section-card">
-              <h2 className="text-lg font-bold gold-accent mb-1">Part 5 — Help Us Build the App</h2>
+              <h2 className="text-lg font-bold gold-accent mb-1">Part 5 — Help Me Build the App</h2>
               <p className="text-xs text-gray-500 mb-4">Last section! What features do you want?</p>
 
               <div className="mb-6">

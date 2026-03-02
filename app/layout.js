@@ -1,8 +1,8 @@
 import './globals.css'
 
 export const metadata = {
-  title: 'Negros CET Survey — Help Us Build a Free Reviewer',
-  description: 'Share your college entrance exam experience and help us build a free reviewer for students in Negros.',
+  title: 'Negros CET Survey — Help Me Build a Free Reviewer',
+  description: 'Share your college entrance exam experience and help me build a free reviewer for students in Negros.',
 }
 
 export default function RootLayout({ children }) {
