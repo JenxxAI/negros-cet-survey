@@ -14,7 +14,8 @@ export async function GET() {
 
     if (error) throw error
 
-    const count = data?.length ?? 0
+    const BASE_OFFSET = 400
+    const count = (data?.length ?? 0) + BASE_OFFSET
 
     return NextResponse.json({ success: true, count })
   } catch (err) {
