@@ -222,16 +222,12 @@ export default function SurveyPage() {
         <div className="text-center mb-10">
           {/* Negros Island Map */}
           <div className="flex justify-center mb-4">
-            <svg viewBox="0 0 120 200" width="60" height="100" aria-label="Negros Island" style={{filter:'drop-shadow(0 0 8px rgba(201,168,76,0.4))'}}>
-              <path
-                d="M60 8 C68 10, 80 18, 85 30 C90 42, 88 52, 92 62 C96 74, 98 82, 94 95 C90 108, 82 116, 78 128 C74 140, 76 152, 70 162 C65 170, 58 174, 52 170 C46 166, 42 156, 40 144 C38 132, 40 120, 36 108 C32 96, 24 88, 22 76 C20 64, 26 54, 30 42 C34 30, 42 14, 52 9 Z"
-                fill="#c9a84c"
-                fillOpacity="0.25"
-                stroke="#c9a84c"
-                strokeWidth="2"
-              />
-              <text x="57" y="95" textAnchor="middle" fill="#c9a84c" fontSize="9" fontWeight="bold" opacity="0.9">NEGROS</text>
-            </svg>
+            <img
+              src="/negros-map.png"
+              alt="Negros Island"
+              width={90}
+              style={{filter:'drop-shadow(0 0 10px rgba(201,168,76,0.5))', opacity: 0.9}}
+            />
           </div>
           <p className="text-xs uppercase tracking-widest gold-accent mb-2">Negros CET Project</p>
           <h1 className="text-3xl md:text-4xl font-display font-bold mb-3">College Entrance Exam<br />Experience Survey</h1>
