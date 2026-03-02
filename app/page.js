@@ -187,7 +187,7 @@ export default function SurveyPage() {
         <div className="text-center mb-10">
           <p className="text-xs uppercase tracking-widest gold-accent mb-2">Negros CET Project</p>
           <h1 className="text-3xl md:text-4xl font-display font-bold mb-3">College Entrance Exam<br />Experience Survey</h1>
-          <p className="text-gray-400 text-sm max-w-md mx-auto">Help us build a <span className="gold-accent font-semibold">free online reviewer</span> for students in Negros! This will only take 5–10 minutes. 🙏</p>
+          <p className="text-gray-400 text-sm max-w-md mx-auto">Help us build a <span className="gold-accent font-semibold">free online reviewer</span> for students in Negros! This will only take 2–3 minutes. 🙏</p>
           {responseCount !== null && (
             <p className="text-xs mt-3 font-semibold" style={{color:'var(--gold)'}}>🙌 {responseCount} student{responseCount !== 1 ? 's have' : ' has'} already responded!</p>
           )}
