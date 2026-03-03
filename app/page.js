@@ -79,6 +79,7 @@ const TOTAL_SECTIONS = 5
 
 export default function SurveyPage() {
   const [section, setSection] = useState(1)
+  const goToSection = (n) => { setSection(n); window.scrollTo({ top: 0, behavior: 'smooth' }) }
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
@@ -330,7 +331,7 @@ export default function SurveyPage() {
             </div>
 
             <div className="flex justify-end">
-              <button className="btn-primary" disabled={form.school.length === 0 || !form.year_taken || form.course.length === 0} onClick={() => setSection(2)}>Next →</button>
+              <button className="btn-primary" disabled={form.school.length === 0 || !form.year_taken || form.course.length === 0} onClick={() => goToSection(2)}>Next →</button>
             </div>
           </div>
         )}
@@ -369,8 +370,8 @@ export default function SurveyPage() {
             </div>
 
             <div className="flex justify-between">
-              <button className="btn-primary" style={{background:'#21262d', color:'#e6edf3'}} onClick={() => setSection(1)}>← Back</button>
-              <button className="btn-primary" onClick={() => setSection(3)}>Next →</button>
+              <button className="btn-primary" style={{background:'#21262d', color:'#e6edf3'}} onClick={() => goToSection(1)}>← Back</button>
+              <button className="btn-primary" onClick={() => goToSection(3)}>Next →</button>
             </div>
           </div>
         )}
@@ -414,8 +415,8 @@ export default function SurveyPage() {
             </div>
 
             <div className="flex justify-between">
-              <button className="btn-primary" style={{background:'#21262d', color:'#e6edf3'}} onClick={() => setSection(2)}>← Back</button>
-              <button className="btn-primary" onClick={() => setSection(4)}>Next →</button>
+              <button className="btn-primary" style={{background:'#21262d', color:'#e6edf3'}} onClick={() => goToSection(2)}>← Back</button>
+              <button className="btn-primary" onClick={() => goToSection(4)}>Next →</button>
             </div>
           </div>
         )}
@@ -454,8 +455,8 @@ export default function SurveyPage() {
             </div>
 
             <div className="flex justify-between">
-              <button className="btn-primary" style={{background:'#21262d', color:'#e6edf3'}} onClick={() => setSection(3)}>← Back</button>
-              <button className="btn-primary" onClick={() => setSection(5)}>Next →</button>
+              <button className="btn-primary" style={{background:'#21262d', color:'#e6edf3'}} onClick={() => goToSection(3)}>← Back</button>
+              <button className="btn-primary" onClick={() => goToSection(5)}>Next →</button>
             </div>
           </div>
         )}
@@ -488,7 +489,7 @@ export default function SurveyPage() {
             {error && <p className="text-red-400 text-sm mb-4 text-center">{error}</p>}
 
             <div className="flex justify-between">
-              <button className="btn-primary" style={{background:'#21262d', color:'#e6edf3'}} onClick={() => setSection(4)}>← Back</button>
+              <button className="btn-primary" style={{background:'#21262d', color:'#e6edf3'}} onClick={() => goToSection(4)}>← Back</button>
               <button className="btn-primary" onClick={handleSubmit} disabled={loading}>
                 {loading ? 'Submitting...' : 'Submit Survey 🎓'}
               </button>
