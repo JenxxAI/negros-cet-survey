@@ -161,7 +161,7 @@ export default function SurveyPage() {
 
   useEffect(() => {
     fetchCount()
-    const interval = setInterval(fetchCount, 30000)
+    const interval = setInterval(fetchCount, 10000)
     return () => clearInterval(interval)
   }, [])
 
@@ -180,6 +180,7 @@ export default function SurveyPage() {
       if (data.success) {
         localStorage.setItem('cet_submitted', '1')
         setSubmitted(true)
+        setResponseCount(prev => prev !== null ? prev + 1 : prev)
         fetchCount()
       }
       else setError('Something went wrong. Please try again.')
