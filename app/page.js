@@ -155,8 +155,17 @@ export default function SurveyPage() {
   const fetchCount = () => {
     fetch('/api/count')
       .then(r => r.json())
-      .then(res => { if (res.success) setResponseCount(res.count) })
-      .catch(() => {})
+      .then(res => {
+        if (res.success) {
+          setResponseCount(res.count)
+          localStorage.setItem('cet_count', String(res.count))
+        }
+      })
+      .catch(() => {
+        // Supabase unreachable — use last known count from localStorage
+        const cached = localStorage.getItem('cet_count')
+        if (cached && responseCount === null) setResponseCount(Number(cached))
+      })
   }
 
   useEffect(() => {
@@ -180,12 +189,22 @@ export default function SurveyPage() {
       if (data.success) {
         localStorage.setItem('cet_submitted', '1')
         setSubmitted(true)
-        setResponseCount(prev => prev !== null ? prev + 1 : prev)
+        setResponseCount(prev => {
+          const next = prev !== null ? prev + 1 : prev
+          if (next !== null) localStorage.setItem('cet_count', String(next))
+          return next
+        })
         fetchCount()
       }
       else setError('Something went wrong. Please try again.')
     } catch {
-      setError('Network error. Please check your connection.')
+      // Network/Supabase error — still count the submission locally
+      setResponseCount(prev => {
+        const next = prev !== null ? prev + 1 : prev
+        if (next !== null) localStorage.setItem('cet_count', String(next))
+        return next
+      })
+      setError('Your response may not have been saved due to a connection issue. Please try again.')
     }
     setLoading(false)
   }
