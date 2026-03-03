@@ -1,6 +1,8 @@
 import { createClient } from '@supabase/supabase-js'
 import { NextResponse } from 'next/server'
 
+export const dynamic = 'force-dynamic'
+
 export async function GET() {
   try {
     const supabase = createClient(
@@ -8,16 +10,16 @@ export async function GET() {
       process.env.SUPABASE_SERVICE_KEY
     )
 
-    const { data, error } = await supabase
+    const { count, error } = await supabase
       .from('survey_responses')
-      .select('id')
+      .select('*', { count: 'exact', head: true })
 
     if (error) throw error
 
     const BASE_OFFSET = 400
-    const count = (data?.length ?? 0) + BASE_OFFSET
+    const total = (count ?? 0) + BASE_OFFSET
 
-    return NextResponse.json({ success: true, count })
+    return NextResponse.json({ success: true, count: total })
   } catch (err) {
     return NextResponse.json({ success: false, error: err.message }, { status: 500 })
   }
