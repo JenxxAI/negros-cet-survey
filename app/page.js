@@ -112,7 +112,7 @@ export default function SurveyPage() {
 
   const set = (key, val) => setForm(f => ({ ...f, [key]: val }))
 
-  const [responseCount, setResponseCount] = useState(400)
+  const [responseCount, setResponseCount] = useState(null)
   const [alreadySubmitted, setAlreadySubmitted] = useState(false)
   const [copied, setCopied] = useState(false)
   const [confetti, setConfetti] = useState([])
@@ -269,12 +269,19 @@ export default function SurveyPage() {
           <p className="text-xs uppercase tracking-widest gold-accent mb-2">Negros CET Project</p>
           <h1 className="text-3xl md:text-4xl font-display font-bold mb-3">College Entrance Exam<br />Experience Survey</h1>
           <p className="text-gray-400 text-sm max-w-md mx-auto">Help me build a <span className="gold-accent font-semibold">free online reviewer</span> for students in Negros! This will only take 2–3 minutes. 🙏</p>
-          {responseCount !== null && (
-            <div className="mt-5 inline-flex flex-col items-center">
-              <span className="text-5xl font-bold" style={{color:'var(--gold)'}}>{responseCount}</span>
-              <span className="text-sm text-gray-400 mt-1">student{responseCount !== 1 ? 's' : ''} already responded 🙌</span>
-            </div>
-          )}
+          <div className="mt-5 inline-flex flex-col items-center">
+            {responseCount === null ? (
+              <div className="animate-pulse flex flex-col items-center gap-2">
+                <div className="h-12 w-24 rounded-lg bg-gray-700" />
+                <div className="h-4 w-40 rounded bg-gray-700" />
+              </div>
+            ) : (
+              <>
+                <span className="text-5xl font-bold" style={{color:'var(--gold)'}}>{responseCount}</span>
+                <span className="text-sm text-gray-400 mt-1">student{responseCount !== 1 ? 's' : ''} already responded 🙌</span>
+              </>
+            )}
+          </div>
         </div>
 
         {/* Progress */}
